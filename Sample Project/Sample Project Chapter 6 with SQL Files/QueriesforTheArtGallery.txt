@@ -1,0 +1,44 @@
+-- Step 6.7 - Write SQL statements that will process five non-routine requests for information from the database just created
+
+--1. Find the names of all artists who were interviewed after January 1, 2014 but who have no works of art listed. 
+
+SELECT firstName, lastName
+FROM Artist
+WHERE interviewDate> '01-Jan-2014' AND NOT EXISTS	
+	(SELECT *
+	FROM	Artwork
+	WHERE artistId =Artist.artistId);
+
+--2.	Find the total commission for salesperson John Smith earned between the dates April 1, 2014 and April 15, 2015. Recall that the gallery charges 10% commission, and the salesperson receives one-half of that, which is 5% --of the selling price.
+
+SELECT .05 * SUM(salePrice)
+FROM Sale
+WHERE saleDate>='01-Apr-2015'  AND saleDate<='15-Apr-2015' AND
+	salespersonSSN = (SELECT socialSecurityNumber
+					FROM Salesperson
+					WHERE firstName= 'John' AND lastName ='Smith');
+
+--3.	Find the collector names, artist names and titles of all artworks that are owned by collectors, not by the --artists themselves, in order by the collector’s last name.
+
+SELECT Collector.firstName, Collector.lastName, Artist.firstName, Artist.lastName, workTitle
+FROM Artist, Artwork, Collector
+WHERE Artist.artistId = Artwork.artistId AND Artwork.collectorsocialSecurityNumber = Collector.socialSecurityNumber AND collectorsocialSecurityNumber  IS NOT NULL
+ORDER BY Collector.lastName, Collector.firstName;
+
+--4.	For each potential buyer, find information about shows that feature his or her preferred artist. 
+
+SELECT firstName, lastName, showTitle, showOpeningDate, showClosingDate
+FROM Show, PotentialCustomer
+WHERE showFeaturedArtistId = PotentialCustomer.preferredArtistId
+ORDER BY potentialCustomerId;
+
+--5.	Find the average sale price of works of artist Georgia Keefe.
+
+SELECT AVG(salePrice)
+FROM Sale
+WHERE artworkId IN (SELECT artworkId
+			FROM Artwork
+			WHERE artistId = (SELECT ArtistId
+					FROM Artist
+					WHERE lastName = 'Keefe' AND firstName ='Georgia'));
+

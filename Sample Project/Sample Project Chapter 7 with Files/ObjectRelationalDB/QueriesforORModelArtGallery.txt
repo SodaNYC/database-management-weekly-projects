@@ -1,0 +1,40 @@
+--Step 7.9 Write five DML commands for the new database, illustrating differences from the strictly relational DML.
+
+--1. Find the names of all artists who were interviewed after January 1, 2014 but who have no works of art listed. 
+SELECT a.name.firstName, a.name.lastName
+FROM Artists a
+WHERE a.interviewDate > '01-Jan-2014' AND a.id NOT IN (SELECT a.artistptr.id
+							FROM Artworks a);
+
+
+--2. Find the total commission for salesperson John Smith earned between the dates April 1, 2015 and April 15, 2015. --Recall that the gallery charges 10% commission, and the salesperson receives one-half of that, which is 5% of the --selling price.
+SELECT .05 * SUM(s.salePrice) AS Commission_for_John_Smith
+FROM Sales s
+WHERE s.saleDate >='01-Apr-2015' AND s.saleDate <='15-Apr-2015' AND
+	s.salesperptr.salesperid = (SELECT p.salesperid
+		FROM Salespeople p
+		WHERE p.name.firstName= 'John' AND p.name.lastName ='Smith');
+
+--3.Find the collector names and artwork titles of all artworks that are owned by collectors, not by the --artists themselves, in order by the collector’s last name.
+
+SELECT  c.name.lastName as Coll, w.workTitle as Title
+FROM Collectors c, Artworks w 
+WHERE w.collptr is not null and w.collptr.cid=c.cid
+ORDER BY c.name.lastName;
+
+--4.For each Customer, find information about shows that feature his or her preferred artist. 
+
+SELECT c.name.lastName As Customer, s.showOpeningDate As Opens, s.showClosingDate AS Closes,s.showTitle as Show
+FROM Shows s , Customers c
+WHERE s.artistptr.id = c.artistptr.id
+ORDER BY c.name.lastName;
+
+--5.Find the average sale price of works of artist Winslow Homes.
+SELECT AVG(s.salePrice)  AS AveragePrice_for_Homes
+FROM Sales s
+WHERE s.workptr.artworkid IN (SELECT w.artworkid
+		FROM Artworks w
+		WHERE w.artistptr.id = (SELECT a.id
+				FROM Artists a
+				WHERE a.name.lastName = 'Homes' AND a.name.firstName ='Winslow'));
+

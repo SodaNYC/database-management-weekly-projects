@@ -1,0 +1,167 @@
+• Step 7.7 - DDL to create the object-relational database, using Oracle syntax.
+
+CREATE OR REPLACE TYPE AddressType AS OBJECT(
+street		VARCHAR2(50),
+city		VARCHAR2(15),
+state		CHAR(2),
+zip		CHAR(10));
+
+CREATE OR REPLACE PhoneType AS OBJECT(
+areaCode	CHAR(3),
+telephoneNumber	CHAR(7));
+
+CREATE OR REPLACE NameType AS OBJECT(
+firstName	VARCHAR2(15), 
+lastName	VARCHAR2(20));
+
+
+CREATE OR REPLACE TYPE ArtistType AS OBJECT (
+Id			NUMBER(6), 	
+name			NameType,
+address			AddressType,
+phone			PhoneType,
+interviewDate	 	DATE, 
+interviewerName 	NameType,
+salesLastYear 		NUMBER(8,2), 
+salesYearToDate		NUMBER(8,2), 
+socialSecurityNumber 	CHAR(9), 	
+usualMedium		VARCHAR2(15), 
+usualStyle 		VARCHAR2(15), 
+usualType 		VARCHAR2(20));
+/
+
+CREATE TABLE Artists OF ArtistType(
+CONSTRAINT Artists_artistId_pk PRIMARY KEY(Id),
+CONSTRAINT Artists_socSecNumber_uk UNIQUE (socialSecurityNumber));
+
+CREATE OR REPLACE TYPE CollectorType AS OBJECT (
+cId			NUMBER(6),
+name			NameType, 
+address			Addresstype,
+phone			Phonetype,
+socialSecurityNumber 	CHAR(9),
+interviewDate 		DATE, 
+interviewerName	 	NameType,
+salesLastYear 		NUMBER(8,2),
+salesYearToDate		NUMBER(8,2)
+);
+/
+
+CREATE TABLE Collectors OF CollectorType( 
+CONSTRAINT Collectors_cId_pk PRIMARY KEY (cId))
+OBJECT IDENTIFIER IS SYSTEM GENERATED;
+
+CREATE OR REPLACE TYPE CustomerType AS OBJECT (
+customerId		NUMBER(6),
+Name			NameType,
+Address			AddressType,
+Phone			phoneType,
+dateFilledIn 		DATE, 
+artistptr		REF ArtistType,
+preferredMedium 	VARCHAR2(15), 
+preferredStyle 		VARCHAR2(15), 
+preferredType 		VARCHAR2(20))
+NOT FINAL;
+/
+
+CREATE OR REPLACE TYPE BuyerType UNDER CustomerType (
+purchasesLastYear 	NUMBER(8,2), 
+purchasesYearToDate 	NUMBER(8,2));
+/
+
+CREATE TABLE Customers OF CustomerType(
+CONSTRAINT Customers_customerId_pk PRIMARY KEY (customerId))
+OBJECT IDENTIFIER IS SYSTEM GENERATED;
+
+
+CREATE OR REPLACE TYPE SalespersonType AS OBJECT ( 
+salesperId		NUMBER(6),
+name			NameType,
+address			AddressType,
+phone			PhoneType,
+socialSecurityNumber	CHAR(9)); 	
+/
+
+CREATE TABLE Salespeople OF SalespersonType(
+CONSTRAINT Salespeople_persId PRIMARY KEY (salesperId))
+OBJECT IDENTIFIER IS SYSTEM GENERATED;
+
+CREATE OR REPLACE TYPE ArtworkType AS OBJECT (
+artworkId 	NUMBER(6),
+artistptr	REF ArtistType,
+workTitle 	VARCHAR2(50), 
+askingPrice 	NUMBER(8,2), 
+dateListed 	DATE, 
+dateShown	DATE, 
+workMedium 	VARCHAR2(15), 
+workSize	VARCHAR2(15), 
+workStyle	VARCHAR2(15), 
+workType 	VARCHAR2(20), 
+workYearCompleted CHAR(4), 
+collptr		REF CollectorType)
+NOT FINAL;
+/
+
+
+
+CREATE OR REPLACE TYPE ReturnedWorkType UNDER ArtworkType (
+dateReturned 	DATE);
+/
+
+CREATE OR REPLACE TYPE WorkForSaleType UNDER ArtworkType (
+Location	VARCHAR2(50));
+/
+
+CREATE OR REPLACE TYPE SoldWorkType UNDER ArtworkType (
+dateSold	DATE,
+cptr		REF CustomerType);
+/ 
+
+CREATE TABLE Artworks OF ArtworkType(
+workId		NUMBER(6),
+artistptr	SCOPE IS Artists,
+collptr		SCOPE is Collectors,
+CONSTRAINT Artwork_artworkId_pk PRIMARY KEY (artworkId))
+OBJECT IDENTIFIER IS SYSTEM GENERATED;
+
+
+
+
+CREATE OR REPLACE TYPE ShowType AS OBJECT (
+ShowTitle 		VARCHAR2(50),
+artistptr		REF artistType,	
+showClosingDate		DATE, 
+showTheme		VARCHAR2(50), 
+showOpeningDate 	DATE);
+/
+
+
+CREATE TABLE Shows of ShowType (
+artistptr	SCOPE IS Artists,
+CONSTRAINT Shows_ShowTitle_pk PRIMARY KEY (ShowTitle))
+OBJECT IDENTIFIER IS SYSTEM GENERATED;
+
+CREATE TABLE ShownIn
+(workId		REF ArtworkType,
+showId		REF ShowType); 
+
+
+CREATE OR REPLACE TYPE SaleType AS OBJECT (
+invoiceNumber 		NUMBER(6), 	
+workptr			REF ArtworkType, 		
+amountRemittedToOwner 	NUMBER(8,2), 
+saleDate		DATE,
+salePrice 		NUMBER	(8,2), 
+saleTax 		NUMBER	(6,2), 
+salesperptr		REF SalespersonType);
+/
+
+CREATE TABLE Sales OF SaleType(
+workptr 	SCOPE is Artworks,
+salesperptr	SCOPE is Salespeople,
+CONSTRAINT Sales_invoiceNumber_pk PRIMARY KEY (invoiceNumber))
+OBJECT IDENTIFIER IS SYSTEM GENERATED;
+
+
+
+

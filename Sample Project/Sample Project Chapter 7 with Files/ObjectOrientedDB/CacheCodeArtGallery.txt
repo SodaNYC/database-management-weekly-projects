@@ -1,0 +1,113 @@
+-- Step 7.3
+
+Class ArtGallery.Address Extends %SerialObject
+{
+
+/// street
+Property street As %String(MAXLEN = 60);
+
+/// city
+Property city As %String;
+
+/// state
+Property state As %String;
+
+/// zip
+Property zip As %String(MAXLEN = 10);
+}
+
+Class ArtGallery.telephone Extends %SerialObject
+{
+
+/// The area code
+Property areaCode As %String(MAXLEN = 3);
+
+/// The 7 digit phone number
+Property phoneNumber As %String(MAXLEN = 8);
+}
+
+Class ArtGallery.Person Extends %Persistent
+{
+
+/// The Person's ID
+Property pID As %Integer;
+
+/// The person's name
+Property personName As %Name;
+
+/// The person's address
+Property personAddress As Address;
+
+/// The person's phone
+Property personPhone As telephone;
+}
+
+Class ArtGallery.Artist Extends (ArtGallery.Person, %Persistent, %XML.Adaptor, %ZEN.DataModel.Adaptor)
+{
+
+/// Date artist was interviewed
+Property interviewDate As %Date;
+
+/// Employee who interviewed the artist
+Property interviewerName As %Name(MAXLEN = 40);
+
+/// Total of the artist's sales last year
+Property salesLastYear As %Currency;
+
+/// Total of the artist's sales to date this year
+Property salesThisYear As %Currency;
+
+/// The artist's social security number
+Property socialSecurityNumber As %String(MAXLEN = 9);
+
+/// The artistic medium the artist usually uses.
+Property usualMedium As %String(MAXLEN = 25);
+
+/// The style the artist usually uses.
+Property usualStyle As %String(MAXLEN = 25);
+
+/// The artistic medium the artist usually uses.
+Property usualType As %String(MAXLEN = 25);
+
+Relationship Creates As ArtGallery.Artwork [ Cardinality = many, Inverse = CreatedBy ];
+}
+
+Class ArtGallery.Artwork Extends %Persistent
+{
+
+/// Unique ID of the work of art
+Property artworkID As %String(MAXLEN = 8);
+
+/// The title of the work of art
+Property workTitle As %String(MAXLEN = 80);
+
+/// The asking price of the work of art
+Property askingPrice As %Currency;
+
+/// The date the work of art was first listed for sale by the gallery
+Property dateListed As %Date;
+
+/// The last date the work of art was included in a show by the gallery
+Property dateShown As %Date;
+
+/// The medium used for the work of art
+Property workMedium As %String;
+
+/// The dimensions of the work of art
+Property workSize As %String;
+
+/// The style used for the work of art
+Property workStyle As %String;
+
+/// The type of the work of art
+Property workType As %String;
+
+/// The year the work of art was completed
+Property yearCompleted As %String;
+
+Relationship CreatedBy As ArtGallery.Artist [ Cardinality = one, Inverse = Creates ];
+
+Index CreatedByIndex On CreatedBy;
+}
+
+

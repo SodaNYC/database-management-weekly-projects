@@ -1,0 +1,13 @@
+-- Step 5.5 Create at least one trigger and write the code for it.
+ 
+--This trigger will update the amount of the buyer’s purchases year-to-date whenever a sale is completed.
+
+create or replace trigger UPDATEBUYERYTD
+after insert on Sale
+for each row
+begin
+		update Buyer
+		set purchasesYearToDate = purchasesYearToDate + :NEW.salePrice
+		where Buyer.LastName = :NEW.buyerLastName and Buyer.FirstName = :NEW.buyerFirstName;
+end;
+/

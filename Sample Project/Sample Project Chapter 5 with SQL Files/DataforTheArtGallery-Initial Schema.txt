@@ -1,0 +1,49 @@
+-- Step 5.3 - Insert several records in each table
+
+INSERT INTO Artist VALUES('Vincenti', 'Leonardo', '10-Oct-2015', 'Hughes', '212', '5559999','10 Main Street','New York', 'NY','10101', 9000, 4500,'099999876', 'oil', 'realism', 'painting');
+INSERT INTO Artist VALUES('Gogh', 'Vincent', '15-Jun-2014', 'Hughes', '914', '5551234','55 West 18 Street','New Rochelle', 'NY', '10801', 9500, 5500,'099999877', 'oil', 'impressionism', 'painting');
+INSERT INTO Artist VALUES('Homes','Winslow', '05-Jan-2015', 'Hughes', '619', '1234567','100 Water Street', 'San Diego', 'CA' ,'92101', 14000, 4000,'083999876', 'watercolor', 'realism', 'painting'); 
+INSERT INTO Artist VALUES('Calderone','Alexander', '10-Feb-2014', 'Hughes', '212', '5559999','10 Main Street',  'New York','NY','10101', 20000, 20000,'123999876', 'steel', 'cubism', 'sculpture');
+INSERT INTO Artist VALUES('Keefe','Georgia', '05-Oct-2015', 'Hughes', '305', '1239999','5 Chestnut Street', 'Miami', 'FL','33010', 19000, 14500,'987999876', 'oil', 'realism', 'painting');
+
+INSERT INTO Collector VALUES('102345678','Jackson', 'John', '01-Feb-2015', 'Hughes', '917', '7771234','24 Pine Avenue','New York', 'NY','10101', 4000,3000,'Vincenti', 'Leonardo' , 'oil', 'realism', 'collage');
+INSERT INTO Collector VALUES('987654321', 'Lee','Mary', '01-Mar-2014', 'Jones', '305', '5551234','10 Ash Street','Miami', 'FL','33010', 2000',3000, 'Gogh', 'Vincent', 'watercolor', 'realism', 'painting');
+INSERT INTO Collector VALUES('034345678', 'Perez','Ramon', '15-Apr-2015', 'Hughes', '619', '8881234','15 Poplar Avenue','San Diego', 'CA' ,'92101', 4500,3500, 'Homes','Winslow', 'oil', 'realism', 'painting');
+INSERT INTO Collector VALUES('888881234','Lee', 'Rick', '20-Jun-2015', 'Hughes', '212', '9991234','24 Pine Avenue','New York', 'NY','10101', 4000,3000, 'Homes','Winslow', 'oil', 'realism', 'sculpture');
+INSERT INTO Collector VALUES('777345678','Torno', 'Samantha', '05-May-2015', 'Jones', '305', '5551234','10 Ash Street','Miami', 'FL','33010', 40000,30000, 'Vincenti', 'Leonardo', 'acrylic', 'realism', 'painting');
+
+INSERT INTO PotentialCustomer VALUES('Burns','Adam','917','3456789', '1 Spruce Street','New York', 'NY','10101', '12-Dec-2014', 'Vincenti', 'Leonardo', 'watercolor', 'impressionism', 'painting');
+INSERT INTO PotentialCustomer VALUES('Burns', 'Carole','917','3456789', '1 Spruce Street', 'New York', 'NY','10101', '12-Dec-2015','Gogh', 'Vincent' , 'watercolor', 'realism', 'sculpture');
+INSERT INTO PotentialCustomer VALUES('Engel', 'David','914','7777777', '715 North Avenue', 'New Rochelle', 'NY', '10801', '08-Aug-2015','Homes','Winslow', 'watercolor', 'realism', 'painting');
+INSERT INTO PotentialCustomer VALUES('Hughes', 'Frances','619','3216789', '10 Pacific Avenue','San Diego', 'CA' , '92101', '05-Jan-2015','Gogh', 'Vincent', 'oil', 'impressionism', 'painting');
+INSERT INTO PotentialCustomer VALUES('Jacobs', 'Irene','312','1239876', '1 Windswept Place','Chicago','IL', '60601', '21-Sep-2015', 'Keefe','Georgia', 'watercolor', 'abs expression', 'painting');
+
+INSERT INTO Artwork VALUES('Vincenti', 'Leonardo', 'Flight', 15000.00, '08-Sep-2015',null,null, 'for sale','oil', '36 in X 48 in', 'realism', 'painting','2001',null );
+INSERT INTO Artwork VALUES('Homes','Winslow','Bermuda Sunset', 8000.00, '15-Mar-2015',null ,'01-Apr-2015' , 'sold','watercolor', '22 in X 28 in', 'realism', 'painting','2003',null );
+INSERT INTO Artwork VALUES('Homes','Winslow','Mediterranean Coast', 4000.00, '18-Oct-2015',null ,'01-Apr-2015', 'for sale','watercolor', '22 in X 28 in', 'realism', 'painting','2000','102345678');
+INSERT INTO Artwork VALUES('Keefe','Georgia','Ghost orchid', 18000.00, '05-Jun-2015',null , null, 'sold','oil', '36 in X 48 in', 'realism', 'painting','2001','034345678' );
+INSERT INTO Artwork VALUES('Calderone','Alexander', 'Five Planes', 15000.00, '10-Jan-2015',null ,'10-Mar-2015' , 'for sale','steel', '36 X 30 X 60 in', 'cubism', 'sculpture','2003','034345678' );  
+
+INSERT INTO Show VALUES('The Sea in Watercolor','Homes','Winslow', '30-Apr-2015','seascapes','01-Apr-2015');
+INSERT INTO Show VALUES('Calderone''s Mastery of Space','Calderone','Alexander','20-Mar-2015',null, '10-Mar-2015');
+
+INSERT INTO ShownIn VALUES('Homes','Winslow','Bermuda Sunset','The Sea in Watercolor');
+INSERT INTO ShownIn VALUES('Homes','Winslow','Mediterranean Coast', 'The Sea in Watercolor');
+INSERT INTO ShownIn VALUES('Calderone','Alexander', 'Five Planes', 'Calderone''s Mastery of Space');
+
+
+
+INSERT INTO Buyer VALUES ('Smiley','Valerie', '15 Hudson Street','New York', 'NY', '10101', '718','5551234', 5000, 7500);
+INSERT INTO Buyer VALUES ('Lee','Winston',  '20 Liffey Avenue', 'Chicago', 'IL', '60601', '312','7654321', 3000, 0);
+INSERT INTO Buyer VALUES ('Babson','Samantha',  '25 Thames Lane', 'San Diego', 'CA' ,'92101', '619','4329876', 15000, 0);
+INSERT INTO Buyer VALUES ('Flagg','John', '22 Amazon Street', 'New York', 'NY','10101', '212','7659876', 3000, 0);
+INSERT INTO Buyer VALUES ( 'Smallshaw','Terrence', '5 Nile Street', 'Miami', 'FL','33010', '305','2323456', 15000, 17000);
+
+INSERT INTO Salesperson VALUES('102445566','Smith', 'John', '10 Sapphire Row', 'New Rochelle', 'NY','10801');
+INSERT INTO Salesperson VALUES('121344321', 'Hughes','Alan', '10 Diamond Street', 'New York', 'NY','10101');
+INSERT INTO Salesperson VALUES('101889988', 'Brady','Mary', '10 Pearl Avenue', 'New Rochelle', 'NY','10801');
+INSERT INTO Salesperson VALUES('111223344', 'Fleming','Jill', '10 Ruby Row','New York', 'NY', '10101');
+INSERT INTO Salesperson VALUES('123123123', 'DeSimone','Terrence', '10 Emerald Lane', 'New York', 'NY','10101');
+
+INSERT INTO Sale VALUES(1234, 'Homes','Winslow','Bermuda Sunset',0 ,'05-Apr-2015',7500,600,  'Smiley','Valerie','718','5551234' , '102445566');
+INSERT INTO Sale VALUES(1235, 'Keefe','Georgia','Ghost orchid',0, '06-Jun-2015',17000,1360, 'Smallshaw','Terrence', '305','2323456' ,'121344321');

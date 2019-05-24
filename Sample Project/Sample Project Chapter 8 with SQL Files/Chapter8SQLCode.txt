@@ -1,0 +1,68 @@
+-- code for Sample Project Chapter 8
+
+-- value independent view
+
+CREATE VIEW ArtistView1 AS 
+	SELECT artistId, firstName, lastName, areaCode, telephoneNumber, street, zip, usualMedium, usualStyle, usualType
+	FROM Artist;
+
+-- value-dependent view
+
+CREATE VIEW ExpensiveArt AS
+	SELECT WorkTitle, firstName, lastName, workMedium, workSize, workStyle, workType
+FROM Artwork w, Artist a
+WHERE w.artistid = a.artistid;
+
+
+CREATE USER U1 IDENTIFIED BY SESAME;
+GRANT SELECT ON ExpensiveArt TO U1;
+
+
+CREATE USER U2 IDENTIFIED BY SECRET2;
+CREATE USER U3 IDENTIFIED BY SECRET3;
+CREATE USER U4 IDENTIFIED BY SECRET4;
+CREATE USER U5 IDENTIFIED BY SECRET5;
+
+
+
+GRANT SELECT ON Collector TO U2;
+GRANT ALL PRIVILEGES ON Collector TO U3;
+GRANT SELECT, INSERT ON Sale TO U4 WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON Artwork TO U5;
+
+
+
+
+CREATE ROLE MYUSERS;  
+GRANT ALL PRIVILEGES ON ARTWORK TO MYUSERS;
+
+GRANT MYUSERS TO U1;
+
+
+create table ArtworkPriceAudit(
+dateofChange	DATE,
+changeuser	varchar2(20),
+IDofArtwork	number(6),
+oldPrice	number(8,2),
+newPrice	number(8,2));
+
+CREATE OR REPLACE TRIGGER ArtworkPriceAuditTrail
+	BEFORE UPDATE OF askingPrice ON Artwork
+	FOR EACH ROW 
+	BEGIN
+		INSERT INTO ArtworkPriceAudit 
+		VALUES(SYSDATE, USER, :OLD.artworkId,:OLD.askingPrice, 					:NEW.askingPrice);
+	END;	
+
+-- test the trigger
+commit;
+
+update artwork set askingPrice = 100;
+
+select askingPrice from artwork;
+
+select * from artworkPriceAudit;
+
+rollback;
+
+select askingPrice from artwork;

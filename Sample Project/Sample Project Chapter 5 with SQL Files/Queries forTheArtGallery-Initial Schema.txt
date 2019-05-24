@@ -1,0 +1,45 @@
+Step 5.4
+
+--1. Find the names of all artists who were interviewed after January 1, 2014 but who have no works of art listed. 
+
+SELECT firstName, lastName
+FROM Artist
+WHERE interviewDate> '01-JAN-2014' AND NOT EXISTS	
+	(SELECT *
+	FROM	Artwork
+	WHERE artistLastName =Artist.lastName AND artistFirstName=Artist.firstName);
+
+
+--2.	Find the total commission for salesperson John Smith earned between the dates April 1, 2014 and April 15, 2015. Recall that the gallery charges 10% commission, and the salesperson receives one-half of that, which is 5% of the selling price.
+
+SELECT .05 * SUM(salePrice)
+FROM Sale
+WHERE saleDate>='01-APR-2014' AND saleDate<='15-APR-2015' AND
+	salespersonSSN = (SELECT socialSecurityNumber
+					FROM Salesperson
+					WHERE firstName= 'John' AND lastName ='Smith');
+
+--3.	Find the collector names, artist names and titles of all artworks that are owned by collectors, not by the artists themselves, in order by the collector’s last name.
+
+SELECT Collector.firstName, Collector.lastName, Artist.firstName, Artist.lastName, workTitle
+FROM Artist, Artwork, Collector
+WHERE Artist.lastname = Artwork.artistLastName AND Artist.firstname = Artwork.artistFirstName AND Artwork.collectorSocialSecurityNumber = Collector.socialSecurityNumber AND collectorSocialSecurityNumber IS NOT NULL
+ORDER BY Collector.lastName, Collector.firstName;
+
+
+--4.	For each potential buyer, find information about shows that feature his or her preferred artist. 
+
+SELECT firstName, lastName, showTitle, showOpeningDate, showClosingDate
+FROM Show, PotentialCustomer
+WHERE showFeaturedArtistLastName = PotentialCustomer.preferredArtistLastName AND
+	showFeaturedArtistFirstName = PotentialCustomer.preferredArtistFirstName
+ORDER BY LastName, firstname;
+
+
+--5.	Find the average sale price of works of artist Georgia Keefe.
+
+SELECT AVG(salePrice)
+FROM Sale
+WHERE artistLastName='Keefe' AND artistFirstName ='Georgia';
+
+

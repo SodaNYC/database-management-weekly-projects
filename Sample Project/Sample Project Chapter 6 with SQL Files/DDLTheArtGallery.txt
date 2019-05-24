@@ -1,0 +1,154 @@
+-- Step 6.4 - drop the existing tables for the Art Gallery, in reverse order
+
+drop table Sale;
+drop table Salesperson;
+drop table Buyer;
+drop table ShownIn;
+drop table Show;
+drop table Artwork;
+drop table PotentialCustomer;
+drop table Collector;
+drop table Artist;
+
+-- create the new tables in normalized form
+
+CREATE TABLE Zips( 
+	zip CHAR(5), 
+	city VARCHAR2(15) NOT NULL, 
+	state CHAR(2) NOT NULL,
+	CONSTRAINT Zips_zip_pk PRIMARY KEY (zip));
+
+CREATE TABLE Artist( 
+	ArtistId NUMBER(6), 
+	firstName VARCHAR2(15) NOT NULL, 
+	lastName VARCHAR2(20) NOT NULL, 
+	interviewDate DATE, 
+	interviewerName VARCHAR2(35), 
+	areaCode	CHAR(3), 
+	telephoneNumber	CHAR(7), 
+	street	VARCHAR2(50), 
+	zip	CHAR(5), 
+	salesLastYear NUMBER(8,2), 
+	salesYearToDate	NUMBER(8,2), 
+	socialSecurityNumber CHAR(9), 
+	usualMedium VARCHAR(15), 
+	usualStyle VARCHAR(15), 
+	usualType VARCHAR(20),
+	CONSTRAINT Artist_ArtistId_pk PRIMARY KEY (ArtistId),
+	CONSTRAINT Artist_socialSecurityNumber_uk UNIQUE (socialSecurityNumber),
+	CONSTRAINT Artist_firstName_lastName_uk UNIQUE (firstName, lastName),
+	CONSTRAINT Artist_zip_fk FOREIGN KEY (zip) REFERENCES Zips (zip));
+
+CREATE TABLE Collector(
+	socialSecurityNumber CHAR(9), 
+	firstName VARCHAR2(15) NOT NULL, 
+	lastName VARCHAR2(20) NOT NULL, 
+	interviewDate DATE, 
+	interviewerName VARCHAR2(35), 
+	areaCode CHAR(3), 
+	telephoneNumber	CHAR(7), 
+	street VARCHAR2(50), 
+	zip CHAR(5), 
+	salesLastYear NUMBER(8,2), 
+	salesYearToDate	NUMBER(8,2), 
+	collectionArtistId NUMBER(6), 
+	collectionMedium VARCHAR(15), 
+	collectionStyle VARCHAR(15), 
+	collectionType VARCHAR(20), 
+	CONSTRAINT Collector_SSN_pk PRIMARY KEY (socialSecurityNumber),
+	CONSTRAINT Collector_collArtistid_fk FOREIGN KEY (collectionArtistId) REFERENCES Artist (artistId),
+	CONSTRAINT Collector_zip_fk FOREIGN KEY (zip) REFERENCES Zips (zip));
+
+CREATE TABLE PotentialCustomer(
+	potentialCustomerId NUMBER(6), 
+	firstname VARCHAR2(15) NOT NULL, 
+	lastName VARCHAR2(20) NOT NULL, 
+	areaCode CHAR(3), 
+	telephoneNumber CHAR(7), 
+	street VARCHAR2(50), 
+	zip CHAR(5), 
+	dateFilledIn DATE, 
+	preferredArtistId NUMBER(6), 
+	preferredMedium VARCHAR2(15), 
+	preferredStyle VARCHAR2(15), 
+	preferredType VARCHAR2(20),
+	CONSTRAINT PotCust_potCustId_pk PRIMARY KEY (potentialCustomerId),
+	CONSTRAINT PotentialCustomer_zip_fk FOREIGN KEY (zip) REFERENCES Zips(zip), 
+	CONSTRAINT PotCust_prefArtistId_fk FOREIGN KEY (preferredArtistId) REFERENCES Artist(artistId));
+
+CREATE TABLE Artwork(
+	artworkId NUMBER(6),
+	artistId NUMBER(6)NOT NULL, 
+	workTitle VARCHAR2(50)NOT NULL, 
+	askingPrice NUMBER(8,2), 
+	dateListed DATE, 
+	dateReturned DATE, 
+	dateShown DATE, 
+	status VARCHAR2(15), 
+	workMedium VARCHAR2(15), 
+	workSize VARCHAR2(15), 
+	workStyle VARCHAR2(15), 
+	workType VARCHAR2(20), 
+	workYearCompleted CHAR(4), 
+	collectorSocialSecurityNumber CHAR(9),
+	CONSTRAINT Artwork_workId_pk PRIMARY KEY (artworkId),
+	CONSTRAINT Artwork_artistId_title_uk UNIQUE (artistId, workTitle),
+	CONSTRAINT Artwork_artistId_fk FOREIGN KEY (artistId) REFERENCES Artist(artistId),
+	CONSTRAINT Artwork_collectorSSN_fk FOREIGN KEY (collectorSocialSecurityNumber) 	REFERENCES Collector(socialSecurityNumber));
+
+CREATE TABLE Show(
+	showTitle VARCHAR2(50), 
+	showFeaturedArtistId NUMBER(6), 
+	showClosingDate DATE, 
+	showTheme VARCHAR2(50), 
+	showOpeningDate DATE,
+	CONSTRAINT Show_showTitle_pk PRIMARY KEY (showTitle),
+	CONSTRAINT Show_FeatArtistId_fk FOREIGN KEY (showFeaturedArtistId) REFERENCES Artist (artistId) );
+
+CREATE TABLE ShownIn(
+	artworkId NUMBER(6), 
+	showTitle VARCHAR2(50),
+	CONSTRAINT ShownIn_workid_showTitle_pk PRIMARY KEY (artworkId, showTitle),
+	CONSTRAINT ShownIn_workId_fk FOREIGN KEY (artworkId) REFERENCES Artwork (artworkId), 
+	CONSTRAINT ShownIn_showTitle_fk FOREIGN KEY (showTitle) REFERENCES Show (showTitle));
+
+
+CREATE TABLE Buyer(
+	buyerId NUMBER(6), 
+	firstName VARCHAR2(15)NOT NULL,
+	lastName VARCHAR2(20) NOT NULL, 
+	street VARCHAR2(50), 
+	zip CHAR(5), 
+	areaCode CHAR(3), 
+	telephoneNumber CHAR(7), 
+	purchasesLastYear NUMBER(8,2), 
+	purchasesYearToDate NUMBER(8,2),
+	CONSTRAINT Buyer_buyerId_pk PRIMARY KEY (buyerId),
+	CONSTRAINT Buyer_zip_fk FOREIGN KEY(zip) REFERENCES Zips(zip) );
+
+
+CREATE TABLE Salesperson  (
+	socialSecurityNumber CHAR(9), 
+	firstName VARCHAR2(15) NOT NULL, 
+	lastName VARCHAR2(20) NOT NULL, 
+	street VARCHAR2(50), 
+	zip CHAR(5),
+	CONSTRAINT Salesperson_SSN_pk PRIMARY KEY (socialSecurityNumber),
+	CONSTRAINT Salesperson_Name_uk UNIQUE (firstName,lastName),
+	CONSTRAINT Salesperson_zip_fk FOREIGN KEY(zip) REFERENCES Zips(zip));
+
+CREATE TABLE Sale (
+	invoiceNumber NUMBER(6), 
+	artworkId  NUMBER(6) NOT NULL, 
+	amountRemittedToOwner NUMBER(8,2) DEFAULT 0.00, 
+	saleDate DATE, 
+	salePrice NUMBER(8,2), 
+	saleTax NUMBER(6,2), 
+	buyerId NUMBER(6)NOT NULL, 
+	salespersonSSN	CHAR(9),
+	CONSTRAINT Sale_invoiceNumber_pk PRIMARY KEY (invoiceNumber),
+	CONSTRAINT Sale_artworkId_uk UNIQUE (artworkId),
+	CONSTRAINT Sale_artworkId_fk FOREIGN KEY (artworkId) REFERENCES Artwork(artworkId),
+	CONSTRAINT Sale_buyerId_fk FOREIGN KEY (buyerId) REFERENCES Buyer (buyerId),
+ 	CONSTRAINT Sale_salespersonSSN_fk FOREIGN KEY (salespersonSSN) REFERENCES Salesperson (socialSecurityNumber));
+	

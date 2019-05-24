@@ -1,0 +1,144 @@
+-- Step 5.1 - Create the tables for the initial relational model	
+
+CREATE TABLE Artist( 
+	lastName 		VARCHAR2(20), 
+	firstName 		VARCHAR2(15), 
+	interviewDate 		DATE, 
+	interviewerName 	VARCHAR2(35), 
+	areaCode		CHAR(3), 
+	telephoneNumber		CHAR(7), 
+	street			VARCHAR2(50), 
+	city 			VARCHAR2(15), 
+	state 			CHAR(2),
+	zip			CHAR(5), 
+	salesLastYear 		NUMBER	(8,2), 
+	salesYearToDate		NUMBER	(8,2), 
+	socialSecurityNumber 	CHAR(9), 
+	usualMedium 		VARCHAR(15), 
+	usualStyle 		VARCHAR(15), 
+	usualType 		VARCHAR(20),
+	CONSTRAINT Artist_Lname_Fname_pk PRIMARY KEY (lastName, firstName),
+	CONSTRAINT Artist_socialSecurityNumber_uk UNIQUE (socialSecurityNumber));
+
+CREATE TABLE Collector(
+	socialSecurityNumber 	CHAR(9), 
+	lastName VARCHAR2(20) 	NOT NULL, 
+	firstName VARCHAR2(15) 	NOT NULL, 
+	interviewDate 		DATE, 
+	interviewerName 	VARCHAR2(35), 
+	areaCode 		CHAR(3), 
+	telephoneNumber		CHAR(7), 
+	street 			VARCHAR2(50), 
+	city 			VARCHAR2(15),
+	state 			CHAR(2),
+	zip 			CHAR(5), 
+	salesLastYear 		NUMBER(8,2), 
+	salesYearToDate		NUMBER(8,2), 
+	collectionArtistLastName 	VARCHAR2 (20), 
+	collectionArtistFirstName 	VARCHAR2 (15),
+	collectionMedium 	VARCHAR(15), 
+	collectionStyle 	VARCHAR(15), 
+	collectionType 		VARCHAR(20), 
+	CONSTRAINT Collector_SSN_pk PRIMARY KEY (socialSecurityNumber),
+	CONSTRAINT Coll_collArtLnameFname_fk FOREIGN KEY(collectionArtistLastName, collectionArtistFirstName) REFERENCES Artist (lastName, firstName) ON DELETE CASCADE);
+	
+CREATE TABLE PotentialCustomer(
+	lastName 		VARCHAR2(20), 
+	firstname 		VARCHAR2(15), 
+	areaCode 		CHAR(3), 
+	telephoneNumber 	CHAR(7), 
+	street 			VARCHAR2(50), 
+	city 			VARCHAR2(15),
+	state 			CHAR(2),
+	zip 			CHAR(5), 
+	dateFilledIn 		DATE, 
+	preferredArtistLastName VARCHAR2(20), 
+	preferredArtistFirstName VARCHAR2(15), 	
+	preferredMedium 	VARCHAR2(15), 
+	preferredStyle 		VARCHAR2(15), 
+	preferredType 		VARCHAR2(20),
+	CONSTRAINT PotCust_name_phone_pk PRIMARY KEY (lastName, firstName, areaCode, telephoneNumber),
+	CONSTRAINT PotCust_prefLName_FName_fk FOREIGN KEY (preferredArtistLastName,preferredArtistFirstName)REFERENCES Artist(lastName, firstName) ON DELETE CASCADE);
+
+CREATE TABLE Artwork(
+	artistLastName 		VARCHAR2 (20),
+	artistFirstName 	VARCHAR2 (15), 
+	workTitle 		VARCHAR2(50), 
+	askingPrice 		NUMBER(8,2), 
+	dateListed 		DATE, 
+	dateReturned 		DATE, 
+	dateShown 		DATE, 
+	status 			VARCHAR2(15), 
+	workMedium 		VARCHAR2(15), 
+	workSize 		VARCHAR2(15), 
+	workStyle 		VARCHAR2(15), 
+	workType 		VARCHAR2(20), 
+	workYearCompleted 	CHAR(4), 
+	collectorSocialSecurityNumber 	CHAR(9),
+	CONSTRAINT Artwork_artworkId_pk PRIMARY KEY (artistLastName, artistFirstName, workTitle),
+	CONSTRAINT Artwork_artistLname_Fname_fk FOREIGN KEY (artistLastName,artistFirstName) REFERENCES Artist(lastName, firstName),
+	CONSTRAINT Artwork_collectorSSN_fk FOREIGN KEY (collectorSocialSecurityNumber) REFERENCES Collector(socialSecurityNumber));
+
+CREATE TABLE Show(
+	showTitle 			VARCHAR2(50), 
+	showFeaturedArtistLastName 	VARCHAR2(20), 
+	showFeaturedArtistFirstName 	VARCHAR2(15), 
+	showClosingDate 		DATE, 
+	showTheme 			VARCHAR2(50), 
+	showOpeningDate 		DATE,
+	CONSTRAINT Show_showTitle_pk PRIMARY KEY (showTitle),
+	CONSTRAINT Show_showArtLname_Fname_fk FOREIGN KEY (showFeaturedArtistLastName,showFeaturedArtistFirstName) REFERENCES Artist (lastName, firstName));
+
+CREATE TABLE ShownIn(
+	artistLastName 	VARCHAR2 (20),
+	artistFirstName VARCHAR2 (15), 
+	workTitle 	VARCHAR2(50),
+	showTitle 	VARCHAR2(50),
+	CONSTRAINT ShownIn_AllAtt_pk PRIMARY KEY (artistLastName, artistFirstName, workTitle,showTitle),
+	CONSTRAINT ShownIn__fk FOREIGN KEY (artistLastName, artistFirstName, workTitle) REFERENCES Artwork (artistLastName, artistFirstName, workTitle),
+	CONSTRAINT ShownIn_showTitle_fk FOREIGN KEY (showTitle) REFERENCES Show (showTitle) );
+
+
+CREATE TABLE Buyer(
+	lastName 	VARCHAR2(20),	
+	firstName 	VARCHAR2(15),
+	street 		VARCHAR2(50), 
+	city 		VARCHAR2(15),
+	state 		CHAR(2),
+	zip 		CHAR(5), 
+	areaCode 	CHAR(3), 
+	telephoneNumber CHAR(7), 
+	purchasesLastYear 	NUMBER(8,2), 
+	purchasesYearToDate 	NUMBER(8,2),
+	CONSTRAINT Buyer_name_phone_pk PRIMARY KEY (lastName, firstName, areaCode, telephoneNumber));
+
+
+
+CREATE TABLE Salesperson  (
+	socialSecurityNumber 	CHAR(9), 
+	lastName 		VARCHAR2(15) NOT NULL, 
+	firstName 		VARCHAR2(20) NOT NULL, 
+	street 			VARCHAR2(50), 
+	city 			VARCHAR2(15),
+	state 			CHAR(2),
+	zip 			CHAR(5),
+	CONSTRAINT Salesperson_SSN_pk PRIMARY KEY (socialSecurityNumber),
+	CONSTRAINT Salesperson_fName_lName_uk UNIQUE (firstName,lastName));
+	
+CREATE TABLE Sale (
+	invoiceNumber 		NUMBER(6), 
+	artistLastName 		VARCHAR2 (20),
+	artistFirstName 	VARCHAR2 (15), 
+	workTitle 		VARCHAR2(50), 
+	amountRemittedToOwner 	NUMBER(8,2) DEFAULT 0.00, 
+	saleDate 		DATE, 
+	salePrice 		NUMBER(8,2), 
+	saleTax 		NUMBER(6,2), 
+	buyerLastName 		VARCHAR2(15),
+	buyerFirstName 		VARCHAR2(20), 
+	buyerAreaCode		CHAR(3),
+	buyerTelephoneNumber 	CHAR(7), 
+	salespersonSSN 		CHAR(9),
+	CONSTRAINT Sale_invoiceNumber_pk PRIMARY KEY (invoiceNumber),
+	CONSTRAINT Sale_ALName_FName_title_fk FOREIGN KEY (artistLastName,artistFirstName,workTitle) REFERENCES Artwork(artistLastName, artistFirstName, workTitle),
+	CONSTRAINT Sale_buyer_Name_Phone_fk FOREIGN KEY (buyerLastName, buyerFirstName, buyerAreaCode, buyerTelephoneNumber) REFERENCES Buyer (lastName, firstName, areaCode, telephoneNumber));

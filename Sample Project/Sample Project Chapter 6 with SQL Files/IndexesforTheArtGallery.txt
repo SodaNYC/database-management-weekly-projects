@@ -1,0 +1,30 @@
+-- Step 6.5 - Create indexes for foreign keys and any other columns that will be used most often for queries.
+
+CREATE UNIQUE INDEX Artist_lastName_firstName ON Artist(lastName, firstName);
+CREATE UNIQUE INDEX Artist_socialSecurityNumber ON Artist(socialSecurityNumber);
+CREATE INDEX Artist_zip ON Artist(zip);
+
+CREATE INDEX Collector_collectionArtistId ON Collector(collectionArtistId);
+CREATE INDEX Collector_zip ON Collector(zip);
+CREATE INDEX Collector_lastName_firstName ON Collector(lastName, firstName);
+
+CREATE INDEX PotentialCustomer_zip ON PotentialCustomer(zip);
+CREATE INDEX PotCust_prefArtistId ON PotentialCustomer(preferredArtistId);
+CREATE INDEX PotCust_last_first ON PotentialCustomer(lastName, firstName);
+
+CREATE INDEX Artwork_artistId ON Artwork(artistId);
+CREATE INDEX Artwork_collectorSSN ON Artwork(collectorSocialSecurityNumber);
+
+CREATE INDEX Show_FeatArtistId ON Show (showFeaturedArtistId);
+
+CREATE INDEX ShownIn_artworkId ON ShownIn (artworkId);
+CREATE INDEX ShownIn_showTitle ON ShownIn (showTitle);
+
+CREATE INDEX Buyer_zip ON Buyer(zip);
+CREATE INDEX Buyer_last_first ON Buyer (lastName, firstName);
+
+CREATE UNIQUE INDEX Salesperson_last_first ON Salesperson (lastName, firstName);
+CREATE INDEX Salesperson_zip ON Salesperson (zip);
+
+CREATE UNIQUE INDEX Sale_artworkId ON Sale (artworkId);
+CREATE INDEX Sale_buyerId ON Sale (buyerId);  

@@ -1,0 +1,66 @@
+-- Step 6.6 - Insert about five records in each table, preserving all constraints
+
+INSERT INTO Zips VALUES('10101', 'New York', 'NY');
+INSERT INTO Zips VALUES('10801', 'New Rochelle', 'NY');
+INSERT INTO Zips VALUES('92101', 'San Diego', 'CA');
+INSERT INTO Zips VALUES('33010', 'Miami', 'FL'); 
+INSERT INTO Zips VALUES('60601', 'Chicago', 'IL');
+
+
+CREATE SEQUENCE artistId_sequence;
+INSERT INTO Artist VALUES(artistId_sequence.NEXTVAL, 'Leonardo', 'Vincenti', '10-Oct-2015', 'Hughes', '212','5559999','10 Main Street', '10101', 9000, 4500,'099999876', 'oil', 'realism', 'painting');
+INSERT INTO Artist VALUES(artistId_sequence.NEXTVAL, 'Vincent', 'Gogh', '15-Jun-2014', 'Hughes', '914','5551234','55 West 18 Street', '10801', 9500, 5500,'099999877', 'oil', 'impressionism', 'painting');
+INSERT INTO Artist VALUES(artistId_sequence.NEXTVAL, 'Winslow', 'Homes', '05-Jan-2015', 'Hughes', '619', '1234567','100 Water Street', '92101', 14000, 4000,'083999876', 'watercolor', 'realism', 'painting'); 
+INSERT INTO Artist VALUES(artistId_sequence.NEXTVAL, 'Alexander', 'Calderone', '10-Feb-2014', 'Hughes', '212','5559999', '10 Main Street', '10101', 20000, 20000,'123999876', 'steel', 'cubism', 'sculpture');
+INSERT INTO Artist VALUES(artistId_sequence.NEXTVAL, 'Georgia', 'Keefe', '05-Oct-2015', 'Hughes', '305', '1239999','5 Chestnut Street', '33010', 19000, 14500,'987999876', 'oil', 'realism', 'painting');
+
+
+INSERT INTO Collector VALUES('102345678', 'John','Jackson', '01-Feb-2015', 'Hughes', '917', '7771234','24 Pine Avenue','10101', 4000,3000, 1, 'oil', 'realism', 'collage');
+INSERT INTO Collector VALUES('987654321', 'Mary','Lee', '01-Mar-2014', 'Jones', '305', '5551234','10 Ash Street',33010, '2000',3000, 2, 'watercolor', 'realism', 'painting');
+INSERT INTO Collector VALUES('034345678', 'Ramon','Perez', '15-Apr-2015', 'Hughes', '619', '8881234','15 Poplar Avenue','92101', 4500,3500, 3, 'oil', 'realism', 'painting');
+INSERT INTO Collector VALUES('888881234', 'Rick','Lee', '20-Jun-2015', 'Hughes', '212', '9991234','24 Pine Avenue','10101', 4000,3000, 3, 'oil', 'realism', 'sculpture');
+INSERT INTO Collector VALUES('777345678', 'Samantha','Torno', '05-May-2015', 'Jones', '305', '5551234','10 Ash Street','33010', 40000,30000, 1, 'acrylic', 'realism', 'painting');
+
+CREATE SEQUENCE potentialCustomerId_sequence;
+INSERT INTO PotentialCustomer VALUES(potentialCustomerId_sequence.NEXTVAL, 'Adam','Burns','917','3456789', '1 Spruce Street', '10101', '12-Dec-2014', 1, 'watercolor', 'impressionism', 'painting');
+INSERT INTO PotentialCustomer VALUES(potentialCustomerId_sequence.NEXTVAL, 'Carole','Burns','917','3456789', '1 Spruce Street', '10101', '12-Dec-2015', 2, 'watercolor', 'realism', 'sculpture');
+INSERT INTO PotentialCustomer VALUES(potentialCustomerId_sequence.NEXTVAL, 'David','Engel','914','7777777', '715 North Avenue', '10801', '08-Aug-2015', 3, 'watercolor', 'realism', 'painting');
+INSERT INTO PotentialCustomer VALUES(potentialCustomerId_sequence.NEXTVAL, 'Frances','Hughes','619','3216789', '10 Pacific Avenue', '92101', '05-Jan-2015', 2, 'oil', 'impressionism', 'painting');
+INSERT INTO PotentialCustomer VALUES(potentialCustomerId_sequence.NEXTVAL, 'Irene','Jacobs','312','1239876',       '1 Windswept Place', '60601', '21-Sep-2015', 5, 'watercolor', 'abst expression', 'painting');
+
+CREATE SEQUENCE artworkId_sequence;
+INSERT INTO Artwork VALUES(artworkid_sequence.NEXTVAL, 1, 'Flight', 15000.00, '08-Sep-2015',null,null, 'for sale','oil', '36 in X 48 in', 'realism', 'painting','2014', null);
+INSERT INTO Artwork VALUES(artworkid_sequence.NEXTVAL, 3, 'Bermuda Sunset', 8000.00, '15-Mar-2015',null ,'01-Apr-2015' , 'sold','watercolor', '22 in X 28 in', 'realism', 'painting','2014', null);
+INSERT INTO Artwork VALUES(artworkid_sequence.NEXTVAL, 3, 'Mediterranean Coast', 4000.00, '18-Oct-2014',null ,'01-Apr-2015', 'for sale','watercolor', '22 in X 28 in', 'realism', 'painting','2001','102345678');
+INSERT INTO Artwork VALUES(artworkid_sequence.NEXTVAL, 5, 'Ghost orchid', 18000.00, '05-Jun-2015',null,null , 'sold','oil', '36 in X 48 in', 'realism', 'painting','2014','034345678' );
+INSERT INTO Artwork VALUES(artworkid_sequence.NEXTVAL, 4, 'Five Planes', 15000.00, '10-Jan-2015',null ,'10-Mar-2015' , 'for sale','steel', '36 X 30 X 60 in', 'cubism', 'sculpture','2015','034345678' );  
+
+INSERT INTO Show VALUES('The Sea in Watercolor',3, '30-Apr-2015','seascapes','01-Apr-2015');
+INSERT INTO Show VALUES('Calderone''s Mastery of Space',4,'20-Mar-2015',null, '10-Mar-2015');
+
+INSERT INTO ShownIn VALUES(2,'The Sea in Watercolor');
+INSERT INTO ShownIn VALUES(3, 'The Sea in Watercolor');
+INSERT INTO ShownIn VALUES(5, 'Calderone''s Mastery of Space');
+
+CREATE SEQUENCE buyerId_sequence;
+INSERT INTO Buyer VALUES (BuyerId_sequence.NEXTVAL, 'Valerie', 'Smiley', '15 Hudson Street', '10101', '718','5551234', 5000, 7500);
+INSERT INTO Buyer VALUES (BuyerId_sequence.NEXTVAL, 'Winston', 'Lee', '20 Liffey Avenue', '60601', '312','7654321', 3000, 0);
+INSERT INTO Buyer VALUES (BuyerId_sequence.NEXTVAL, 'Samantha', 'Babson', '25 Thames Lane', '92101', '619','4329876', 15000, 0);
+INSERT INTO Buyer VALUES (BuyerId_sequence.NEXTVAL, 'John', 'Flagg', '22 Amazon Street', '10101', '212','7659876', 3000, 0);
+INSERT INTO Buyer VALUES (BuyerId_sequence.NEXTVAL, 'Terrence', 'Smallshaw', '5 Nile Street', '33010', '305','2323456', 15000, 17000);
+
+INSERT INTO Salesperson VALUES('102445566', 'John','Smith', '10 Sapphire Row', '10801');
+INSERT INTO Salesperson VALUES('121344321', 'Alan','Hughes', '10 Diamond Street', '10101');
+INSERT INTO Salesperson VALUES('101889988', 'Mary','Brady', '10 Pearl Avenue', '10801');
+INSERT INTO Salesperson VALUES('111223344', 'Jill','Fleming', '10 Ruby Row', '10101');
+INSERT INTO Salesperson VALUES('123123123', 'Terrence','DeSimone', '10 Emerald Lane', '10101');
+
+INSERT INTO Sale VALUES(1234, 2,0 ,'05-Apr-2015',7500,600, 1, '102445566');
+INSERT INTO Sale VALUES(1235, 4, 0,'06-Apr-2015',17000,1360, 5, '121344321');
+
+
+
+
+
+
+

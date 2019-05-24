@@ -1,0 +1,63 @@
+--Step 7.8 Insert several records in each table. 
+
+INSERT INTO Artists VALUES(ArtistType(101, NameType('Leonardo','Vincenti'),AddressType('10 Main Street','New York', 'NY','10101'),PhoneType('212', '5559999'),'10-OCT-2015',NameType('Alan','Hughes'), 9000, 4500,'099999876', 'oil', 'realism', 'painting'));
+INSERT INTO Artists VALUES(ArtistType(102, NameType('Vincent','Gogh'),AddressType('55 West 18 Street','New Rochelle', 'NY', '10801'),PhoneType('914', '5551234'), '15-Jun-2014',NameType('Alan','Hughes'), 9500, 5500,'099999877', 'oil', 'impressionism', 'painting'));
+INSERT INTO Artists VALUES(ArtistType(103, NameType('Winslow','Homes'),AddressType('100 Water Street', 'San Diego', 'CA' ,'92101'),PhoneType('619', '1234567'), '05-Jan-2015',NameType('Alan','Hughes'),  14000, 4000,'083999876', 'watercolor', 'realism', 'painting'));
+INSERT INTO Artists VALUES(ArtistType(104, NameType('Alexander','Calderone'),AddressType('10 Main Street',  'New York','NY','10101'),PhoneType('212', '5559999'), '15-Jun-2014',NameType('Alan','Hughes'),  20000, 20000,'123999876', 'steel', 'cubism', 'sculpture'));
+INSERT INTO Artists VALUES(ArtistType(105, NameType('Georgia','Keefe'),AddressType('5 Chestnut Street', 'Miami', 'FL','33010'),PhoneType('305', '1239999'), '15-Jun-2014',NameType('Alan','Hughes'),  19000, 14500,'987999876', 'oil', 'realism', 'painting'));
+
+INSERT INTO Collectors VALUES(CollectorType(401, NameType('John','Jackson'),AddressType('24 Pine Avenue','New York', 'NY','10101'),PhoneType('917', '7771234'),'102345678', '01-Feb-2015', nameType('Alan','Hughes'),  4000,3000));
+INSERT INTO Collectors VALUES(CollectorType(402, NameType('Mary','Lee'),AddressType('10 Ash Street','Miami', 'FL','33010'),PhoneType('305', '5551234'),'987654321', '01-Mar-2014', nameType('Alan','Hughes'),  2000,3000));
+INSERT INTO Collectors VALUES(CollectorType(403, NameType('Ramon','Perez'),AddressType('15 Poplar Avenue','San Diego', 'CA' ,'92101'),PhoneType('619', '8881234'),'034345678', '15-Apr-2015', nameType('Alan','Hughes'),  4500,3500));
+INSERT INTO Collectors VALUES(CollectorType(404, NameType('Rick','Lee'),AddressType('24 Pine Avenue','New York', 'NY','10101'),PhoneType('212', '9991234'),'888881234', '20-Jun-2015', nameType('Alan','Hughes'),  4000,3000));
+INSERT INTO Collectors VALUES(CollectorType(405, NameType('Samantha','Torno'),AddressType('10 Ash Street','Miami', 'FL','33010'),PhoneType('305', '5551234'),'777345678', '05-May-2015', nameType('Alan','Hughes'),  40000,30000));
+
+INSERT INTO Customers VALUES(CustomerType(201,NameType('Adam','Burns'),AddressType('1 Spruce Street','New York', 'NY','10101'),PhoneType('917','3456789'), '12-Dec-2014', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Leonardo' and a.name.lastName='Vincenti'), 'watercolor', 'impressionism', 'painting'));
+INSERT INTO Customers VALUES(CustomerType(202,NameType('Carole','Burns'),AddressType('1 Spruce Street','New York', 'NY','10101'),PhoneType('917','3456789'), '12-Dec-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Vincent' and a.name.lastName='Gogh'), 'watercolor', 'realism', 'sculpture'));
+INSERT INTO Customers VALUES(CustomerType(203,NameType('David','Engel'),AddressType( '715 North Avenue', 'New Rochelle', 'NY', '10801'),PhoneType('914','7777777'), '08-Aug-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Winslow' and a.name.lastName='Homes'), 'watercolor', 'realism', 'painting'));
+INSERT INTO Customers VALUES(CustomerType(204,NameType('Frances','Hughes'),AddressType('10 Pacific Avenue','San Diego', 'CA' , '92101'),PhoneType('619','3216789'), '05-Jan-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Vincent' and a.name.lastName='Gogh'), 'oil', 'impressionism', 'painting'));
+INSERT INTO Customers VALUES(CustomerType(205,NameType('Irene','Jacobs'),AddressType('1 Windswept Place','Chicago','IL', '60601'),PhoneType('312','1239876'), '21-Sep-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Georgia' and a.name.lastName='Keefe'), 'watercolor', 'abs expression', 'painting'));
+
+INSERT INTO Customers VALUES(BuyerType(501,NameType('Valerie','Smiley'),AddressType('15 Hudson Street','New York', 'NY', '10101'),PhoneType('718','5551234'), '10-Dec-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Vincent' and a.name.lastName='Gogh'), 'watercolor', 'realism', 'painting' , 5000, 7500));
+INSERT INTO Customers VALUES(BuyerType(502,NameType('Winston','Lee'),AddressType('20 Liffey Avenue', 'Chicago', 'IL', '60601'),PhoneType('312','7654321'), '12-Dec-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Winslow' and a.name.lastName='Homes'), 'watercolor', 'realism', 'painting' , 3000, 0));
+INSERT INTO Customers VALUES(BuyerType(503,NameType('Samantha','Babson'),AddressType('25 Thames Lane', 'San Diego', 'CA' ,'92101'),PhoneType('619','4329876'), '12-Oct-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Georgia' and a.name.lastName='Keefe'), 'watercolor', 'realism', 'painting' , 15000, 0));
+INSERT INTO Customers VALUES(BuyerType(504,NameType('John','Flagg'),AddressType('22 Amazon Street', 'New York', 'NY','10101'),PhoneType('212','7659876'), '12-Jan-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Vincent' and a.name.lastName='Gogh'), 'watercolor', 'realism', 'painting' , 3000,0));
+INSERT INTO Customers VALUES(BuyerType(505,NameType('Terrence','Smallshaw'),AddressType('5 Nile Street', 'Miami', 'FL','33010'),PhoneType('305','2323456'), '15-Mar-2015', (SELECT REF(a) FROM Artists a WHERE a.name.firstName='Alexander' and a.name.lastName='Calderone'), 'watercolor', 'realism', 'painting' , 15000, 17000));
+
+INSERT INTO Salespeople VALUES(SalespersonType(301, NameType('John','Smith'),AddressType('10 Sapphire Row', 'New Rochelle', 'NY','10801'),PhoneType('914', '1112222'),'102445566'));
+INSERT INTO Salespeople VALUES(SalespersonType(302, NameType('Alan','Hughes'),AddressType('10 Diamond Street', 'New York', 'NY','10101'),PhoneType('212', '1232222'),'121344321'));
+INSERT INTO Salespeople VALUES(SalespersonType(303, NameType('Mary','Brady'),AddressType( '10 Pearl Avenue', 'New Rochelle', 'NY','10801'),PhoneType('914', '3332222'),'101889988'));
+INSERT INTO Salespeople VALUES(SalespersonType(304, NameType('Jill','Fleming'),AddressType('10 Ruby Row','New York', 'NY', '10101'),PhoneType('212', '4443333'),'111223344'));
+INSERT INTO Salespeople VALUES(SalespersonType(305, NameType('Terrence','DeSimone'),AddressType('10 Emerald Lane', 'New York', 'NY','10101'),PhoneType('212', '8889999'),'123123123'));
+
+
+
+INSERT INTO Artworks VALUES(WorkForSaleType(1,(SELECT REF(A) FROM Artists a WHERE a.name.firstName='Leonardo' and a.name.lastName='Vincenti'),'Flight', 15000.00, '08-Sep-2015',null, 'oil', '36 in X 48 in', 'realism', 'painting','2014',null, 'showroom A')); 
+
+INSERT INTO Artworks VALUES(WorkForSaleType(2,(SELECT REF(A) FROM Artists a WHERE a.name.firstName='Winslow' and a.name.lastName='Homes'),'Mediterranean Coast', 4000.00, '18-Oct-2015',null, 'watercolor', '22 in X 28 in', 'realism', 'painting','2000',(SELECT REF(C) FROM Collectors c WHERE c.name.firstName='Samantha' and c.name.lastName='Torno'), 'showroom B')); 
+
+INSERT INTO Artworks VALUES(ReturnedWorkType(3,(SELECT REF(A) FROM Artists a WHERE a.name.firstName='Alexander' and a.name.lastName='Calderone'),'Five Planes', 15000.00, '10-Jan-2015','10-Mar-2015', 'steel', '36 X 30 X 60 in', 'cubism', 'sculpture','2003',(SELECT REF(C) FROM Collectors c WHERE c.name.firstName='Samantha' and c.name.lastName='Torno'), '1-Sep-2015')); 
+
+INSERT INTO Artworks VALUES(SoldWorkType(4,(SELECT REF(A) FROM Artists a WHERE a.name.firstName='Winslow' and a.name.lastName='Homes'),'Bermuda Sunset', 8000.00, 
+ '15-Mar-2015',null, 'watercolor', '22 in X 28 in', 'realism', 'painting','2003',NULL, '25-Mar-2015', (SELECT REF(C) FROM Customers C where customerid=203)));
+
+
+
+
+INSERT INTO Shows VALUES(ShowType('The Sea in Watercolor',(SELECT REF(a) FROM Artists A WHERE id=102), '30-Apr-2015','seascapes','01-Apr-2015'));
+
+
+INSERT INTO Shows VALUES(ShowType('Calderone''s Mastery of Space',(SELECT REF(a) FROM Artists A WHERE id=104), '20-Mar-2015','steel sculpture','01-Mar-2015'));
+
+
+INSERT INTO ShownIn VALUES((SELECT REF(w) FROM Artworks w WHERE artworkID=2), (SELECT REF(s) FROM Shows s WHERE showTitle = 'The Sea in Watercolor'));
+
+INSERT INTO ShownIn VALUES((SELECT REF(w) FROM Artworks w WHERE artworkID=3), (SELECT REF(s) FROM Shows s WHERE showTitle = 'The Sea in Watercolor'));
+
+
+INSERT INTO ShownIn VALUES((SELECT REF(w) FROM Artworks w WHERE artworkID=4), (SELECT REF(s) FROM Shows s WHERE showTitle = 'Calderone''s Mastery of Space'));
+
+INSERT INTO Sales VALUES(SaleType(123456,(SELECT REF(w) FROM Artworks w WHERE artworkID=4),0,'15-APR-2015' ,7500,750,(SELECT REF(s) FROM Salespeople s WHERE s.name.firstname='John' and s.name.lastname='Smith'))); 
+
+
+

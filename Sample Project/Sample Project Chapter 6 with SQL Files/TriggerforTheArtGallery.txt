@@ -1,0 +1,11 @@
+-- Step 6.8 - This trigger will update the amount of the buyer’s purchases year-to-date whenever a sale is completed.
+
+create or replace trigger UPDATEBUYERYTD
+after insert on Sale
+for each row
+begin
+		update Buyer
+		set purchasesYearToDate = purchasesYearToDate + :NEW.salePrice
+		where Buyer.buyerID = :NEW.buyerID;
+end;
+/
